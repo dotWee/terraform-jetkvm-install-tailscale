@@ -12,4 +12,5 @@ module "tailscale_jetkvm" {
   tailscale_auth_key   = var.tailscale_auth_key
   tailscale_extra_args = var.tailscale_extra_args
   nftables_mode        = var.nftables_mode
+  tailscale_hostname   = var.tailscale_hostname
 }

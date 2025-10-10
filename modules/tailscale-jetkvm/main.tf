@@ -107,6 +107,7 @@ resource "null_resource" "tailscale_up" {
     device_ip = var.device_ip
     tver      = var.tailscale_version
     xargs     = var.tailscale_extra_args
+    hostname  = var.tailscale_hostname
     auth_set  = tostring(var.tailscale_auth_key != null && length(var.tailscale_auth_key) > 0)
   }
 
@@ -116,10 +117,10 @@ resource "null_resource" "tailscale_up" {
     command = <<-EOT
       set -euo pipefail
       if [ "${var.tailscale_auth_key}" != "" ] && [ "${var.tailscale_auth_key}" != "null" ]; then
-        ssh -o StrictHostKeyChecking=no -i ${var.ssh_private_key_file} ${var.ssh_user}@${var.device_ip} "${var.tailscale_dir}/tailscale up --authkey=${var.tailscale_auth_key} ${var.tailscale_extra_args} || true"
+        ssh -o StrictHostKeyChecking=no -i ${var.ssh_private_key_file} ${var.ssh_user}@${var.device_ip} "${var.tailscale_dir}/tailscale up --hostname=${var.tailscale_hostname} --authkey=${var.tailscale_auth_key} ${var.tailscale_extra_args} || true"
       else
         echo "No auth key provided; interactive device auth may be required."
-        ssh -o StrictHostKeyChecking=no -i ${var.ssh_private_key_file} ${var.ssh_user}@${var.device_ip} "${var.tailscale_dir}/tailscale up ${var.tailscale_extra_args} || true"
+        ssh -o StrictHostKeyChecking=no -i ${var.ssh_private_key_file} ${var.ssh_user}@${var.device_ip} "${var.tailscale_dir}/tailscale up --hostname=${var.tailscale_hostname} ${var.tailscale_extra_args} || true"
       fi
     EOT
   }

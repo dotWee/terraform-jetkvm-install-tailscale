@@ -56,4 +56,10 @@ variable "nftables_mode" {
   default     = true
 }
 
+variable "tailscale_hostname" {
+  type        = string
+  description = "Hostname to set for the Tailscale node"
+  default     = "jetkvm"
+}
+
 
