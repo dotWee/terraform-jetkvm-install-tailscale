@@ -1,0 +1,41 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "terraform-init",
+            "type": "shell",
+            "command": "terraform init"
+        },
+        {
+            "label": "terraform-validate",
+            "type": "shell",
+            "command": "terraform validate",
+            "dependsOn": [
+                "terraform-format"
+            ]
+        },
+        {
+            "label": "terraform-format",
+            "type": "shell",
+            "command": "terraform fmt -recursive"
+        },
+        {
+            "label": "terraform-plan",
+            "type": "shell",
+            "command": "terraform plan -out plan.out",
+            
+            "dependsOn": [
+                "terraform-init",
+                "terraform-validate",
+            ]
+        },
+        {
+            "label": "terraform-apply",
+            "type": "shell",
+            "command": "terraform apply plan.out",
+            "dependsOn": "terraform-plan"
+        }
+    ]
+}

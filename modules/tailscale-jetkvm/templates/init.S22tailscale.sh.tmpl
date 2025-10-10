@@ -1,0 +1,45 @@
+#!/bin/sh
+# /etc/init.d/S22tailscale - Start/stop Tailscale on JetKVM
+
+log="/tmp/ts.log"
+
+echo "$(date): S22tailscale script starting with arg: $1" >> $log
+
+wait_for_tun() {
+  modprobe tun 2>>$log
+  for i in $(seq 1 10); do
+    [ -e /dev/net/tun ] && return 0
+    echo "$(date): /dev/net/tun not ready, retrying..." >> $log
+    sleep 1
+  done
+  echo "$(date): /dev/net/tun still not present after waiting" >> $log
+  return 1
+}
+
+wait_for_network() {
+  for i in $(seq 1 10); do
+    ip route | grep default >/dev/null && return 0
+    echo "$(date): no default route yet, retrying..." >> $log
+    sleep 1
+  done
+  echo "$(date): still no default route after waiting" >> $log
+  return 1
+}
+
+case "$1" in
+  start)
+    wait_for_tun || exit 1
+    wait_for_network || exit 1
+    echo "$(date): Starting tailscaled..." >> $log
+    ${firewall_prefix}${tailscale_dir}/tailscaled \
+      -statedir ${tailscale_state_dir} >> $log 2>&1 &
+    ;;
+  stop)
+    echo "$(date): Stopping tailscaled..." >> $log
+    killall tailscaled >> $log 2>&1 || true
+    ;;
+  *)
+    echo "Usage: $0 {start|stop}" >&2
+    exit 1
+    ;;
+esac
