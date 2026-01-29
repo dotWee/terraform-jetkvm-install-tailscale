@@ -16,8 +16,8 @@ Features include:
 
 ## Quick Start
 
-> **Note:** JetKVM set up normally with Developer Mode enabled and your SSH public key added (see JetKVM docs).  
-> Your workstation has `terraform`, `ssh`, `curl`, and `gzip` available (macOS & Linux works well).  
+> **Note:** JetKVM set up normally with Developer Mode enabled and your SSH public key added (see JetKVM docs).
+> Your workstation has `terraform`, `ssh`, `curl`, and `gzip` available (macOS & Linux works well).
 
 1. Configure variables via a `.tfvars` file or environment variables. Example `terraform.tfvars`:
 
@@ -30,7 +30,7 @@ Features include:
     ```
 
     Alternatively export secrets safely:
-    
+
     ```bash
     export TF_VAR_tailscale_auth_key="tskey-auth-..."
     ```
@@ -50,7 +50,7 @@ Features include:
       -i $SSH_PRIVATE_KEY_FILE \
       "/userdata/tailscale/tailscale status || true"
     ```
-    
+
     If no auth key is provided, `tailscale up` will prompt for interactive device auth. Follow the URL to add the JetKVM to your Tailnet.
 
 ## Terraform Module
@@ -58,6 +58,7 @@ Features include:
 The module is located in [`modules/tailscale-jetkvm`](modules/tailscale-jetkvm).
 
 Key inputs (see [`variables.tf`](modules/tailscale-jetkvm/variables.tf) for all):
+
 - `device_ip` (string): JetKVM IP, for example `10.10.0.6`.
 - `ssh_user` (string): SSH user, defaults to `root`.
 - `ssh_private_key_file` (string): Path to your private key.
@@ -65,6 +66,7 @@ Key inputs (see [`variables.tf`](modules/tailscale-jetkvm/variables.tf) for all)
 ### Variables
 
 Key inputs (see [`variables.tf`](variables.tf) for all):
+
 - `device_ip` (string): JetKVM IP, for example `10.10.0.6`.
 - `ssh_user` (string): SSH user, defaults to `root`.
 - `ssh_private_key_file` (string): Path to your private key.
@@ -98,7 +100,7 @@ Key inputs (see [`variables.tf`](variables.tf) for all):
     ssh root@<ip> -i <key> "/userdata/tailscale/tailscale status"
     ```
 
- - If `tailscaled` fails on boot but works when run later, check `/tmp/ts.log` on the device and ensure `/dev/net/tun` exists. The init script now attempts `modprobe tun` and retries for up to ~10s. See: [Getting Tailscale to work on my JetKVM](https://shanemcd.com/posts/04-jetkvm-tailscale)
+- If `tailscaled` fails on boot but works when run later, check `/tmp/ts.log` on the device and ensure `/dev/net/tun` exists. The init script now attempts `modprobe tun` and retries for up to ~10s. See: [Getting Tailscale to work on my JetKVM](https://shanemcd.com/posts/04-jetkvm-tailscale)
 
 ### Note on non-persistent MAC address
 
