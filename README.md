@@ -1,3 +1,7 @@
+> **Archived as of 2026-02-07 - use the [official tailscale install script](https://jetkvm.com/docs/networking/remote-access#tailscale) from JetKVM**
+
+---
+
 # Tailscale on JetKVM through Terraform
 
 This project installs and configures Tailscale on a JetKVM device (BusyBox/dropbear) using Terraform provisioners.
